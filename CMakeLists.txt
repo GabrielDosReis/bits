@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.28)
 
 include(FetchContent)
 # Download the boilerplate for the experimental support for C++ Modules
