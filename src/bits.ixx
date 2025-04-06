@@ -14,12 +14,19 @@ namespace gdr::bits {
     export template<typename T>
     concept EnumType = std::is_enum_v<T>;
 
-    // -- Same as `rep()`, except the as bag of bits, i.e. unsigned type.
+    // -- Same as `std::to_underlying()`, except as bag of bits, i.e. unsigned type.
     export template<EnumType T>
     constexpr auto bag(T t)
     {
         using S = std::make_unsigned_t<std::underlying_type_t<T>>;
         return static_cast<S>(std::to_underlying(t));
+    }
+
+    // -- This predicate holds if the bag of bit `x` contains of the bits of `y`.
+    template<EnumType T>
+    constexpr bool contains(T x, T y)
+    {
+        return (bag(x) & bag(y)) == bag(y);
     }
 
     // -- Bit mask operations on bitmask enums, sequestered in a dedicated namespace.
