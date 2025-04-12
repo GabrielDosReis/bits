@@ -22,13 +22,6 @@ namespace gdr::bits {
         return static_cast<S>(std::to_underlying(t));
     }
 
-    // -- This predicate holds if the bag of bit `x` contains of the bits of `y`.
-    template<EnumType T>
-    constexpr bool contains(T x, T y)
-    {
-        return (bag(x) & bag(y)) == bag(y);
-    }
-
     // -- Bit mask operations on bitmask enums, sequestered in a dedicated namespace.
     namespace operations {
         export template<EnumType T>
@@ -54,5 +47,28 @@ namespace gdr::bits {
         {
             return static_cast<T>(~bits::bag(x));
         }
+    }
+
+    // -- This predicate holds if the bag of bit `x` contains of the bits of `y`.
+    export template<EnumType T>
+    constexpr bool contains(T x, T y)
+    {
+        using namespace operations;
+        return (x & y) == y;
+    }
+
+    // -- This predicate holds if the bad of bit `x` contains none of the bits in `y`.
+    export template<EnumType T>
+    constexpr bool excludes(T x, T y)
+    {
+        using namespace operations;
+        return (x & y) == T{};
+    } 
+
+    // -- Return the number of bits in the bag `x`.
+    export template<EnumType T>
+    auto size(T x)
+    {
+        return std::popcount(bag(x));
     }
 }
